@@ -70,7 +70,6 @@ export function Navbar() {
                 <Link href="/corporate-overview">Corporate Overview</Link>
                 <Link href="/products">Products</Link>
                 <Link href="/operations">Operations</Link>
-                <Link href="/global-presence">Global Presence</Link>
                 <Link href="/quality-control">Quality Control</Link>
 
                 <div className="border-t my-4" />
