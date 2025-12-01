@@ -21,17 +21,18 @@ export default function ModeToggle() {
     )
   }
 
+  // 🔥 NEW: toggle only between light and dark
   const handleToggle = () => {
-    if (theme === "light") setTheme("dark")
-    else if (theme === "dark") setTheme("system")
-    else setTheme("light")
+    setTheme(theme === "light" ? "dark" : "light")
   }
 
   return (
     <Button variant="outline" size="icon" onClick={handleToggle}>
-      {theme === "light" && <Sun className="h-5 w-5" />}
-      {theme === "dark" && <Moon className="h-5 w-5" />}
-      {theme === "system" && <Sun className="h-5 w-5 opacity-50" />}
+      {theme === "light" ? (
+        <Sun className="h-5 w-5" />
+      ) : (
+        <Moon className="h-5 w-5" />
+      )}
     </Button>
   )
 }
