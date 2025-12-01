@@ -26,10 +26,9 @@ export function Navbar() {
         {/* DESKTOP LINKS */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
           <Link href="/">Home</Link>
-          <Link href="/corporate-overview">Corporate Overview</Link>
+          <Link href="/About">About</Link>
           <Link href="/products">Products</Link>
           <Link href="/operations">Operations</Link>
-          <Link href="/global-presence">Global Presence</Link>
           <Link href="/quality-control">Quality Control</Link>
         </div>
 
