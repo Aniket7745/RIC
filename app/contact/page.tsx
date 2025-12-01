@@ -2,6 +2,7 @@
 // This is the main Server Component file: app/contact/page.tsx
 import { MapPin, Mail, Clock, Phone, Send, Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
+import React from "react"; // Required for React.ElementType type
 
 // ========================= STATIC DATA (Server Rendered) =========================
 const contactInfo = {
@@ -17,8 +18,17 @@ const contactInfo = {
 
 // ========================= STATIC COMPONENTS (Server Rendered) =========================
 
+// Define a TypeScript interface for the component props
+interface ContactDetailCardProps {
+  icon: React.ElementType; // The icon component (e.g., MapPin)
+  title: string;
+  content: string | string[];
+  link?: string;
+}
+
 // Component for a single static contact detail block
-const ContactDetailCard = ({ icon: Icon, title, content, link }) => (
+// FIX: Apply the interface to the component props
+const ContactDetailCard = ({ icon: Icon, title, content, link }: ContactDetailCardProps) => (
   <div className="flex flex-col items-center text-center p-5 bg-gray-50 dark:bg-neutral-900 rounded-xl border border-gray-200 dark:border-neutral-800 transition duration-300">
     <Icon className="h-7 w-7 text-red-600 mb-3" />
     <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">{title}</h3>
@@ -53,81 +63,73 @@ const LoadingSkeleton = () => (
   </div>
 );
 
-// ========================= CLIENT COMPONENT LOGIC (Isolated) =========================
-// This component must be defined in a separate file with "use client" in a real project.
-// Here, we define it as a simple function for dynamic import.
-const ClientContactForm = () => {
-  // We assume the containing environment is the client boundary.
-  // NOTE: This component does NOT use 'framer-motion' directly.
-  return (
-    <div className="grid md:grid-cols-2 gap-10">
-      {/* 1. Contact Form (The container will be wrapped by motion below) */}
-      <div
-        className="p-6 md:p-8 bg-white dark:bg-neutral-800 rounded-xl shadow-2xl"
-      >
-        <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center md:text-left">
-          Send Us Your Business Enquiry
-        </h3>
-        <form className="space-y-4">
-          {/* Form fields */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <input type="text" placeholder="Full Name*" required className="w-full p-3 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-700/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-red-600 focus:border-red-600 outline-none transition text-sm" />
-            <input type="text" placeholder="Company Name" className="w-full p-3 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-700/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-red-600 focus:border-red-600 outline-none transition text-sm" />
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <input type="email" placeholder="Work Email*" required className="w-full p-3 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-700/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-red-600 focus:border-red-600 outline-none transition text-sm" />
-            <input type="tel" placeholder="Phone Number*" required className="w-full p-3 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-700/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-red-600 focus:border-red-600 outline-none transition text-sm" />
-          </div>
-          <textarea rows={4} placeholder="Your requirements (Product, Quantity, Location)*" required className="w-full p-3 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-700/50 text-gray-900 dark:placeholder-gray-400 focus:ring-red-600 focus:border-red-600 outline-none resize-none transition text-sm" />
-          <button type="submit" className="inline-flex items-center justify-center w-full px-8 py-3 text-lg font-medium rounded-md shadow-lg text-white bg-red-600 hover:bg-red-700 transition duration-300 transform hover:-translate-y-0.5">
-            Send Enquiry <Send className="ml-2 h-5 w-5" />
-          </button>
-          <p className="text-xs text-center text-gray-500 dark:text-gray-400 pt-1">
-            *We aim to respond to all business enquiries within 24 hours.
-          </p>
-        </form>
-      </div>
-
-      {/* 2. Google Map Embed */}
-      <div
-        className="md:order-last order-last rounded-xl shadow-2xl overflow-hidden h-64 md:h-full md:min-h-[300px] border-4 border-red-600/50"
-      >
-        <iframe
-          width="100%"
-          height="100%"
-          frameBorder="0"
-          style={{ border: 0 }}
-          src="https://maps.google.com/maps?q=11%2FA%2C%20Maharshi%20Debendra%20Road%2C%201st%20Floor%2C%20Room%20No.%2011%2C%20Kolkata-700007%2C%20West%20Bengal%2C%20India&t=&z=15&ie=UTF8&iwloc=&output=embed"
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="RIC STEEL Registered Office Location"
-        ></iframe>
-      </div>
-    </div>
-  );
-}
 
 // ========================= DYNAMIC IMPORT (Code Splitting and Client Isolation) =========================
 const DynamicContactSection = dynamic(
-  // IMPORANT FIX: We are now dynamically importing a **wrapper function** that includes the 'use client' logic
-  // and the import of 'framer-motion'. This guarantees the client-only code is not evaluated during SSR.
+  // The loader function imports framer-motion and defines the Client Component wrapper
   async () => {
-    // 1. Mark this function's scope as client-side (in a real project, this is the 'use client' directive).
-    // 2. Dynamically import the heavy client library here.
+    // Dynamically import the heavy client library here.
     const { motion } = await import("framer-motion");
 
-    // 3. Return a component that applies the motion wrappers to the previously defined structure.
-    // This wrapper is now the Client Component.
+    // This component applies the motion wrapper to the static content above.
     const MotionContactForm = () => (
-      <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6 }}
-      >
-        <ClientContactForm />
-      </motion.div>
+      <>
+        {/* Wrap both the Form and the Map in separate motion containers for stagger effect */}
+        <div className="grid md:grid-cols-2 gap-10">
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+          >
+            {/* Render the form section here */}
+            <div className="p-6 md:p-8 bg-white dark:bg-neutral-800 rounded-xl shadow-2xl">
+              <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center md:text-left">
+                Send Us Your Business Enquiry
+              </h3>
+              <form className="space-y-4">
+                {/* Form fields */}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <input type="text" placeholder="Full Name*" required className="w-full p-3 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-700/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-red-600 focus:border-red-600 outline-none transition text-sm" />
+                  <input type="text" placeholder="Company Name" className="w-full p-3 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-700/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-red-600 focus:border-red-600 outline-none transition text-sm" />
+                </div>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <input type="email" placeholder="Work Email*" required className="w-full p-3 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-700/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-red-600 focus:border-red-600 outline-none transition text-sm" />
+                  <input type="tel" placeholder="Phone Number*" required className="w-full p-3 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-700/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-red-600 focus:border-red-600 outline-none transition text-sm" />
+                </div>
+                <textarea rows={4} placeholder="Your requirements (Product, Quantity, Location)*" required className="w-full p-3 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-700/50 text-gray-900 dark:placeholder-gray-400 focus:ring-red-600 focus:border-red-600 outline-none resize-none transition text-sm" />
+                <button type="submit" className="inline-flex items-center justify-center w-full px-8 py-3 text-lg font-medium rounded-md shadow-lg text-white bg-red-600 hover:bg-red-700 transition duration-300 transform hover:-translate-y-0.5">
+                  Send Enquiry <Send className="ml-2 h-5 w-5" />
+                </button>
+                <p className="text-xs text-center text-gray-500 dark:text-gray-400 pt-1">
+                  *We aim to respond to all business enquiries within 24 hours.
+                </p>
+              </form>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+            className="md:order-last order-last rounded-xl shadow-2xl overflow-hidden h-64 md:h-full md:min-h-[300px] border-4 border-red-600/50"
+          >
+            {/* Render the map section here */}
+            <iframe
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              style={{ border: 0 }}
+              src="https://maps.google.com/maps?q=11%2FA%2C%20Maharshi%20Debendra%20Road%2C%201st%20Floor%2C%20Room%20No.%2011%2C%20Kolkata-700007%2C%20West%20Bengal%2C%20India&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              allowFullScreen // FIX: Changed allowFullScreen="" to allowFullScreen for correct boolean typing
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="RIC STEEL Registered Office Location"
+            ></iframe>
+          </motion.div>
+        </div>
+      </>
     );
 
     // We return the component itself
@@ -135,12 +137,12 @@ const DynamicContactSection = dynamic(
   },
   {
     loading: () => <LoadingSkeleton />, // Server renders this
+    ssr: false, // Prevents server rendering of the client component boundary
   }
 );
 
 
 // ========================= MAIN PAGE (Server Component) =========================
-// This component remains untouched, ensuring a fast initial render.
 export default function ContactPage() {
   return (
     <div className="w-full">
