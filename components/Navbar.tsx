@@ -67,7 +67,7 @@ export function Navbar() {
 
               <nav className="flex flex-col gap-4 mt-6 text-sm font-medium">
                 <Link href="/">Home</Link>
-                <Link href="/corporate-overview">Corporate Overview</Link>
+                <Link href="/About">About</Link>
                 <Link href="/products">Products</Link>
                 <Link href="/operations">Operations</Link>
                 <Link href="/quality-control">Quality Control</Link>
