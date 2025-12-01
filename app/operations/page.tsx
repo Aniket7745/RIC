@@ -192,7 +192,7 @@ export default function OperationsPage() {
               transition={{ duration: 0.5 }} // Faster duration
             >
               <h3 className="text-2xl font-semibold mb-3">Kolkata Hub</h3>
-              <Image src="/factory.jpg" alt="Kolkata Steel Market" width={600} height={400} className="rounded-xl shadow-lg object-cover w-full h-auto" />
+              <Image src="/factory4.jpg" alt="Kolkata Steel Market" width={600} height={400} className="rounded-xl shadow-lg object-cover w-full h-auto" />
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 30 }} // Reduced X shift
@@ -201,7 +201,7 @@ export default function OperationsPage() {
               transition={{ duration: 0.5 }} // Faster duration
             >
               <h3 className="text-2xl font-semibold mb-3">Howrah Industrial Zone</h3>
-              <Image src="/factory.jpg" alt="Howrah Steel Trading" width={600} height={400} className="rounded-xl shadow-lg object-cover w-full h-auto" />
+              <Image src="/factory3.jpg" alt="Howrah Steel Trading" width={600} height={400} className="rounded-xl shadow-lg object-cover w-full h-auto" />
             </motion.div>
           </div>
 
