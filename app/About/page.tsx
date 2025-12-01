@@ -63,7 +63,7 @@ export default function AboutPage() {
           </div>
 
           <Image
-            src="/factory.jpg"
+            src="/factory2.jpg"
             alt="Steel Industry"
             width={600}
             height={400}
@@ -136,7 +136,7 @@ export default function AboutPage() {
           </div>
 
           <Image
-            src="/factory.jpg"
+            src="/factory3.jpg"
             alt="Operations"
             width={600}
             height={400}

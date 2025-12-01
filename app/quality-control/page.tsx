@@ -49,7 +49,7 @@ export default function QualityControlPage() {
           transition={{ repeat: Infinity, duration: 18, ease: "easeInOut" }}
         >
           <video
-            src="/product/herosection.mp4"
+            src="/quality.mp4"
             autoPlay
             loop
             muted

@@ -53,7 +53,7 @@ export default function ProductsPage() {
 
         <div className="absolute inset-0">
           <Image
-            src="/factory.jpg" // Placeholder path for a product inventory image
+            src="/factory4.jpg" // Placeholder path for a product inventory image
             alt="RIC STEEL Product Range"
             fill
             className="object-cover"

@@ -56,7 +56,7 @@ export default function OperationsPage() {
           transition={{ repeat: Infinity, duration: 18, ease: "easeInOut" }}
         >
           <video
-            src="/product/herosection.mp4"
+            src="operations.mp4"
             autoPlay
             loop
             muted
